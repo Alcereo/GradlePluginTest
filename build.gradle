@@ -1,5 +1,5 @@
 group = 'ru.alcereo.gradle'
-version = '1.0-SNAPSHOT'
+version = '1.4-SNAPSHOT'
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
@@ -14,20 +14,39 @@ dependencies {
     compile localGroovy()
 }
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+
+            artifact sourceJar {
+                classifier "sources"
+            }
         }
     }
 
     repositories{
-        maven {
-            credentials{
-                username "admin"
-                password "admin123"
+
+        if (version.contains("SNAPSHOT")){
+            maven() {
+                credentials{
+                    username "admin"
+                    password "admin123"
+                }
+                url 'http://localhost:8081/nexus/content/repositories/alcereo_snap/'
             }
-            url 'http://localhost:8081/nexus/content/repositories/alcereo_snap/'
+        }else{
+            maven() {
+                credentials{
+                    username "admin"
+                    password "admin123"
+                }
+                url 'http://localhost:8081/nexus/content/repositories/alcereo/'
+            }
         }
     }
 }

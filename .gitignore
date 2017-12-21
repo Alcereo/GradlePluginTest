@@ -4,3 +4,5 @@
 gradle
 build
 !/src/main/groovy/ru/alcereo/gradle/
+/gradlew
+/gradlew.bat
