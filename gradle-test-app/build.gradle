@@ -1,19 +1,20 @@
 buildscript{
     repositories{
-        maven{ url 'http://localhost:8081/nexus/content/repositories/alcereo_snap/' }
+//        maven{ url 'http://localhost:8081/nexus/content/repositories/alcereo_snap/' }
+        mavenCentral()
+        jcenter()
     }
     dependencies{
-        classpath group: 'ru.alcereo.gradle', name: 'GradlePlugin', version: '1.4-SNAPSHOT'
+        classpath group: 'ru.alcereo.gradle', name: 'grudle-plugin', version: '1.4-SNAPSHOT'
     }
 }
 
-version 'unspecified'
+version '1.1-SNAPSHOT'
 
-apply plugin: 'java'
 apply plugin: 'alc-plugin'
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile springBootConfig
 }
+
 

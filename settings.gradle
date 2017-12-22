@@ -1,3 +1,0 @@
-rootProject.name = 'GradlePlugin'
-include 'gradle-test-app'
-

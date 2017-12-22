@@ -1,5 +1,6 @@
 package ru.alcereo.gradle
 
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -14,6 +15,7 @@ class TestPlugin implements Plugin<Project>{
         project.configure(project){
 
             apply plugin: 'java'
+            apply plugin: 'com.bmuschko.docker-remote-api'
 
             sourceCompatibility = 1.7
 
@@ -41,7 +43,6 @@ class TestPlugin implements Plugin<Project>{
             }
         }
 
-
         project.task("shell-script-test"){
             group = ALCEREO_GROUP
             description = "Выполнение скрипта..."
@@ -51,6 +52,24 @@ class TestPlugin implements Plugin<Project>{
                 def proc = "git --version".execute()
                 proc.waitForProcessOutput(System.out, System.err)
             }
+        }
+
+        project.task("buildImage", type: DockerBuildImage){
+            group = ALCEREO_GROUP
+
+            inputDir = new File(".")
+            url = "unix:///var/run/docker.sock"
+            tag = "alcereo/test:$project.version"
+        }
+
+        project.task("buildImageAsLatest", type: DockerBuildImage){
+            group = ALCEREO_GROUP
+
+            dependsOn 'buildImage'
+
+            inputDir = new File(".")
+            url = "unix:///var/run/docker.sock"
+            tag = "alcereo/test:latest"
         }
 
     }
